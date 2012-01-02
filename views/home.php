@@ -38,17 +38,18 @@
 		<div>
 			<div class="row">
 				<div class="span16">
-					<form method="post" action="/new">
+					<form method="post" action="<?php echo $app->urlFor('new'); ?>">
 						<fieldset>
 							<legend>Leave a Comment</legend>
 							<div class="clearfix">
 								<label>Nickname</label>
 								<div class="input"><input name="nickname" type="text" class="xlarge" /></div>
 							</div>
-							<div class="clearfix">
+							<div class="clearfix<?php if($errorStatus){ echo ' error'; } ?>">
 								<label for="textarea">Content</label>
 								<div class="input">
-									<textarea name="content" class="xlarge"></textarea>
+									<textarea name="content" class="xlarge<?php if($errorStatus){ echo ' error'; } ?>"></textarea>
+									<?php if($errorStatus){ ?><span class="help-block">You must enter some content.</span> <?php } ?>
 								</div>
 							</div>
 							<div class="actions">

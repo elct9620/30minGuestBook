@@ -49,9 +49,32 @@ $app->get('/', function() use ($app){
 	$comments->sort('timestamp DESC');
 	$comments->limit(10, ($pageNum-1)*10);
 	
+	//Error Status
+	$errorStatus = (bool) $app->request()->get('error');
 
-	$app->render('home.php', array('comments' => $comments, 'app' => $app, 'totalComments' => $totalComments));
-});
+	$app->render('home.php', array('comments' => $comments, 'app' => $app, 'totalComments' => $totalComments, 'errorStatus' => $errorStatus));
+})->name('home');
+
+//New Comment
+$app->post('/new', function() use ($app){
+	$nickname = htmlspecialchars($app->request()->post('nickname'));
+	$content = htmlspecialchars($app->request()->post('content'));
+	$nickname || $nickname = 'Unknow';
+	
+	if(empty($content)){
+		$app->redirect($app->urlFor('home') . '?error=1');
+	}
+	
+	//Save Comment
+	$comment = new Comment;
+	$comment->nickname = $nickname;
+	$comment->content = $content;
+	$comment->timestamp = time();
+	$comment->save();
+	
+	$app->redirect($app->urlFor('home'));
+	
+})->name('new');
 
 //運行 Slim Framework
 $app->run();

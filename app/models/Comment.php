@@ -10,11 +10,5 @@ class Comment extends ActiveMongo
 {
 	public $nickname = 'Unknow';
 	public $content;
-	public $timestamp;
-	
-	public function getComments($page, $limit)
-	{
-		
-	}
-	
+	public $timestamp;	
 }
