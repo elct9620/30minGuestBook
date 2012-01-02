@@ -16,6 +16,11 @@
 		.container{
 			margin:15px auto;
 		}
+		
+		.comment-count{
+			margin-bottom: 10px;
+		}
+		
 	</style>
 </head>
 
@@ -31,29 +36,40 @@
 		</nav>
 
 		<div>
-			<div>
-				<form method="post" action="/new">
-					<div class="clearfix">
-						<label>Nickname</label>
-						<div class="input"><input name="nickname" type="text" /></div>
-					</div>
-					<div class="clearfix">
-						<label for="textarea">Content</label>
-						<div class="input">
-							<textarea name="content" class="xxlarge"></textarea>
-						</div>
-					</div>
-					<div class="actions">
-						<button class="btn primary" type="submit">Add Comment</button>
-					</div>
-				</form>
+			<div class="row">
+				<div class="span16">
+					<form method="post" action="/new">
+						<fieldset>
+							<legend>Leave a Comment</legend>
+							<div class="clearfix">
+								<label>Nickname</label>
+								<div class="input"><input name="nickname" type="text" class="xlarge" /></div>
+							</div>
+							<div class="clearfix">
+								<label for="textarea">Content</label>
+								<div class="input">
+									<textarea name="content" class="xlarge"></textarea>
+								</div>
+							</div>
+							<div class="actions">
+								<button class="btn primary" type="submit">Add Comment</button>
+							</div>
+						</fieldset>
+					</form>
+				</div>
 			</div>
-			<?php foreach($comments as $c){ ?>
-				<blockquote>
-					<?php echo $c->content; ?>
-					<small><?php echo $c->nickname; ?>, <?php echo date('Y-m-d H:i:s', $c->timestamp); ?></small>
-				</blockquote>
-			<?php } ?>
+			<div class="comment-count">
+				<span class="label notice">Notice</span>
+				System has <?php echo intval($totalComments); ?> comments.
+			</div>
+			<div>
+				<?php foreach($comments as $c){ ?>
+					<blockquote>
+						<p><?php echo $c->content; ?></p>
+						<small><?php echo $c->nickname; ?>, <?php echo date('Y-m-d H:i:s', $c->timestamp); ?></small>
+					</blockquote>
+				<?php } ?>
+			</div>
 		</div>
 
 		<footer>

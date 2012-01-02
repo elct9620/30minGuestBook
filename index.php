@@ -43,13 +43,14 @@ $app->get('/', function() use ($app){
 	$pageNum || $pageNum = 1;
 	
 	//Make Commetn Query
-	$comments = new Comment;	
+	$comments = new Comment;
+	$totalComments = $comments->count();	
 	$comments->reset();
 	$comments->sort('timestamp DESC');
 	$comments->limit(10, ($pageNum-1)*10);
 	
 
-	$app->render('home.php', array('comments' => $comments, 'app' => $app));
+	$app->render('home.php', array('comments' => $comments, 'app' => $app, 'totalComments' => $totalComments));
 });
 
 //運行 Slim Framework
