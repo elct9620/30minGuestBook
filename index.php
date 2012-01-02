@@ -37,22 +37,43 @@ require_once(ABSPATH . 'models/Comment.php');
 //載入 APPs
 
 //初始化首頁
-$app->get('/', function() use ($app){
+$app->get('/(:page)', function($page = 1) use ($app){
 	//Get Page Number
-	$pageNum = intval($app->request()->get('page'));
+	$pageNum = intval($page);
 	$pageNum || $pageNum = 1;
+	$offset = ($pageNum-1)*10;
+
 	
 	//Make Commetn Query
 	$comments = new Comment;
-	$totalComments = $comments->count();	
+	$totalComments = $comments->count();
+	if($offset > $totalComments){
+		$offset = 0;
+	}	
 	$comments->reset();
 	$comments->sort('timestamp DESC');
-	$comments->limit(10, ($pageNum-1)*10);
+	$comments->limit(10, $offset);
 	
 	//Error Status
 	$errorStatus = (bool) $app->request()->get('error');
-
-	$app->render('home.php', array('comments' => $comments, 'app' => $app, 'totalComments' => $totalComments, 'errorStatus' => $errorStatus));
+	
+	//Page Count
+	$totalPage = ceil($totalComments/10);
+	
+	if($page > $totalPage){
+		$page = 1;
+	}
+	
+	$app->render('home.php', 
+		array(
+			'comments' => $comments,
+			'app' => $app, 
+			'totalComments' => $totalComments, 
+			'errorStatus' => $errorStatus,
+			'totalPage' => $totalPage,
+			'page' => $page,
+		)
+	);
 })->name('home');
 
 //New Comment

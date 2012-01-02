@@ -31,7 +31,10 @@
 		</header>
 		<nav>
 			<ul class="breadcrumb">
-				<li><a href="<?php echo $app->request()->getRootUri(); ?>">Home</a></li>
+				<li><a href="<?php echo $app->request()->getRootUri(); ?>">Home</a><?php echo ($page > 1) ? '<span class="divider">/</span>' : '' ?></li>
+				<?php if($page > 1){ ?> 
+				<li><a href="<?php echo $app->urlFor('home', array('page' => $page)); ?>">Page. <?php echo $page; ?></a></li>	
+				<?php } ?>
 			</ul>
 		</nav>
 
@@ -70,6 +73,33 @@
 						<small><?php echo $c->nickname; ?>, <?php echo date('Y-m-d H:i:s', $c->timestamp); ?></small>
 					</blockquote>
 				<?php } ?>
+			</div>
+			<div class="pagination">
+				<ul>
+					<li class="prev<?php echo ($page-1 < 1) ? ' disabled' : ''; ?>"><a href="<?php echo $app->urlFor('home', array('page' => $page-1)); ?>">&larr; Previous</a></li>
+					<?php 
+						$start = 1;
+						$maxPage = $totalPage;
+						
+						if($page > 4){
+							$start = $page - 4;
+						}
+						
+						if($totalPage - $page < 5 && $totalPage > 10){
+							$start = $totalPage - 9;
+							$maxPage = $totalPage;
+						}
+						
+						if($start + 10 <= $totalPage){
+							$maxPage = $start + 9;
+						}
+						
+						for($i = $start; $i <= $maxPage; ++$i){ 
+					?>
+					<li<?php echo ($page == $i) ? ' class="active"' : ''; ?>><a href="<?php echo $app->urlFor('home', array('page' => $i)); ?>"><?php echo $i; ?></a></li>
+					<?php } ?>
+					<li class="next<?php echo ($page+1 > $totalPage) ? ' disabled' : ''; ?>"><a href="<?php echo $app->urlFor('home', array('page' => $page+1)); ?>">Next &rarr;</a></li>
+				</ul>
 			</div>
 		</div>
 
