@@ -25,7 +25,7 @@ $app = new Slim(
 );
 
 //連接資料庫（MongoDB）
-if(DB_USER &&　DB_PASS){
+if(DB_USER && DB_PASS){
 	ActiveMongo::connect(DB_NAME, DB_HOST, DB_USER, DB_PASS); //從設定檔讀取資料庫資訊
 }else{
 	ActiveMongo::connect(DB_NAME, DB_HOST); //因為ActiveMongo沒有動態設定使用者名稱/密碼的功能，所以另外檢查
